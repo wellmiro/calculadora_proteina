@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Proteína</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #e63946;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d62828;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de Proteína</h2>
+        <form id="proteinForm">
+            <label for="peso">Peso (kg):</label>
+            <input type="text" id="peso" required>
+
+            <label for="bf">Índice de Gordura Corporal (%):</label>
+            <input type="text" id="bf" required>
+
+            <label for="intensidade">Intensidade de Exercício:</label>
+            <select id="intensidade">
+                <option value="1.5">3 vezes por semana</option>
+                <option value="1.8">5 vezes por semana</option>
+                <option value="2.0">6 vezes por semana + cardio</option>
+            </select>
+
+            <button type="button" onclick="calcularProteina()">Calcular</button>
+        </form>
+
+        <div class="result" id="resultado"></div>
+    </div>
+
+    <script>
+        // Função para detectar se é Safari
+        function isSafari() {
+            const userAgent = navigator.userAgent;
+            return /Safari/.test(userAgent) && /AppleComputer/.test(navigator.vendor);
+        }
+
+        // Redirecionar para a App Store se for Safari
+        if (isSafari()) {
+            window.location.href = 'https://apps.apple.com/br/app/google-chrome/id535886823';
+        }
+
+        // Função para calcular a proteína
+        function calcularProteina() {
+            // Obter valores do formulário e garantir que a entrada seja tratada corretamente
+            const peso = parseFloat(document.getElementById('peso').value.replace(',', '.'));
+            const bf = parseFloat(document.getElementById('bf').value.replace(',', '.'));
+            const intensidade = parseFloat(document.getElementById('intensidade').value);
+
+            // Verificar se os valores são válidos
+            if (isNaN(peso) || isNaN(bf) || isNaN(intensidade)) {
+                alert("Por favor, preencha todos os campos corretamente.");
+                return;
+            }
+
+            // Calcular a quantidade de proteína
+            const massaMagra = peso - (peso * (bf / 100));
+            const proteina = massaMagra * intensidade;
+
+            // Exibir o resultado
+            const resultadoDiv = document.getElementById('resultado');
+            if (isFinite(proteina)) {
+                resultadoDiv.innerText = `Você deve consumir aproximadamente ${proteina.toFixed(2)}g de proteína por dia.`;
+            } else {
+                resultadoDiv.innerText = "Houve um erro no cálculo. Tente novamente.";
+            }
+        }
+    </script>
+</body>
+</html>
